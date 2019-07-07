@@ -1,0 +1,21 @@
+server:
+  port: 8091
+  servlet:
+    context-path: /logService2
+eureka:
+#  instance:
+#    #客户端在注册时就会使用自己的ip地址而不是主机名
+#    prefer-ip-address: true
+#    #renew频率，向eureka服务发送renew信息，默认30秒
+#    lease-renewal-interval-in-seconds: 30
+  client:
+#    #使用eureka注册服务
+#    register-with-eureka: true
+#    #是否需要去检索寻找服务，默认true
+#    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  application:
+    #服务名
+    name: logService2
