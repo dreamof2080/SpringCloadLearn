@@ -1,0 +1,14 @@
+#server (eureka 默认端口为8761)
+server:
+  port: 8701
+#服务名
+spring:
+  application:
+    name: eureka-server2
+eureka:
+  client:
+    #服务地址
+    service-url:
+      #这里设置服务地址8700，注意peer1的端口是8701
+      defaultZone: http://localhost:8700/eureka/
+
