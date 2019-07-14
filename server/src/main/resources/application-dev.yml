@@ -1,0 +1,24 @@
+#server (eureka 默认端口为8761)
+server:
+  port: 8761
+#服务名
+spring:
+  application:
+    name: eureka-cluster
+eureka:
+  client:
+    #是否注册到eureka(eureka本身是不需要再注册到自己的)
+    register-with-eureka: false
+    #是否从eureka获取注册信息,作为服务器不需要获取注册信息
+    fetch-registry: false
+    #服务地址
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
+  instance:
+    #服务实效时间，eureka多长时间没收到服务的renew操作，就剔除该服务，默认90秒
+    lease-expiration-duration-in-seconds: 90
+  server:
+    #清理无效节点的时间间隔，默认60000毫秒，即60秒
+    eviction-interval-timer-in-ms: 60000
+    #自我保护模式（默认打开），如果达到85%的服务被下线，则认为网络故障，不再下线其他服务
+    enable-self-preservation: true
