@@ -15,6 +15,9 @@ spring:
       - mail:
           smtp:
             auth: true
+  freemarker:
+    # 是否优先从文件系统加载template，默认是true，如果创建了templates文件夹则无法打开首页，这里需要设置成false
+    prefer-file-system-access: false
 eureka:
   client:
     #是否注册到eureka(eureka本身是不需要再注册到自己的)
