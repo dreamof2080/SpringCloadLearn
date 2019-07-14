@@ -18,4 +18,4 @@ eureka:
 spring:
   application:
     #服务名
-    name: logService2
+    name: LOGSERVICE2
