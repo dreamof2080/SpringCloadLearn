@@ -31,5 +31,8 @@ public interface MailService {
      * @param templateName 模板名称
      * @param users 接收用户
      */
-    void sentTemplateMail(String subject, Map<String,Object> params, String templateName, String... users);
+    void sentFreeMarkerTemplateMail(String subject, Map<String,Object> params, String templateName, String... users);
+
+
+    void sentThymeleafTemplateMail(String subject, Map<String,Object> params, String templateName, String... users);
 }

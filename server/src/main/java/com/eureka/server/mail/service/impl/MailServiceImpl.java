@@ -10,6 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -21,6 +23,9 @@ public class MailServiceImpl implements MailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    private TemplateEngine templateEngine;
 
     @Value("${spring.mail.username}")
     private String from;
@@ -64,7 +69,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sentTemplateMail(String subject, Map<String, Object> params, String templateName, String... users) {
+    public void sentFreeMarkerTemplateMail(String subject, Map<String, Object> params, String templateName, String... users) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true);
@@ -74,6 +79,26 @@ public class MailServiceImpl implements MailService {
             Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
             configuration.setClassForTemplateLoading(this.getClass(),"/templates");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(configuration.getTemplate(templateName),params);
+
+            messageHelper.setSubject(subject);
+            messageHelper.setText(html,true);
+            javaMailSender.send(mimeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sentThymeleafTemplateMail(String subject, Map<String, Object> params, String templateName, String... users) {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true);
+            messageHelper.setFrom(this.from);
+            messageHelper.setTo(users);
+
+            Context context = new Context();
+            context.setVariables(params);
+            String html = templateEngine.process(templateName, context);
 
             messageHelper.setSubject(subject);
             messageHelper.setText(html,true);
